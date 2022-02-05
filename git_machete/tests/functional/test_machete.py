@@ -2595,20 +2595,19 @@ class MacheteTester(unittest.TestCase):
 
         self.launch_command('squash', '-f', fork_point)
 
-        current_branch_log = os.popen('git log -3 --format=%s').read()
-
         expected_branch_log = (
             "Third commit.\n"
             "Second commit.\n"
             "First commit.\n"
         )
 
-        self.assertEqual(
-            current_branch_log,
-            expected_branch_log,
-            msg=("Verify that `git machete squash -f <fork-point>` squashes commit"
-                 " from one succeeding the fork-point until tip of the branch.")
-        )
+        with os.popen('git log -3 --format=%s').read() as current_branch_log:
+            self.assertEqual(
+                current_branch_log,
+                expected_branch_log,
+                msg=("Verify that `git machete squash -f <fork-point>` squashes commit"
+                     " from one succeeding the fork-point until tip of the branch.")
+            )
 
     def test_squash_with_invalid_fork_point(self) -> None:
         (
