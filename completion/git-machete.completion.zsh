@@ -65,7 +65,12 @@ _git-machete() {
           _arguments '1:: :__git_machete_directions_go' && ret=0
           ;;
         (github)
-          _arguments '1:: :__git_machete_github_subcommands' && ret=0
+          _arguments \
+            '(--all)'--all'[Checkout all open PRs.]' \
+            '(--by)'--by'[Checkout open PRs authored by the given Github user]' \
+            '(--mine)'--mine'[Checkout open PRs for the current user associated with the Github token.]' \
+            '(--draft)'--draft'[Creates the new PR as draft]' \
+            && ret=0
           ;;
         (help)
           _arguments '1:: :__git_machete_help_topics' && ret=0
@@ -217,7 +222,7 @@ __git_machete_github_subcommands() {
   local github_subcommands
   github_subcommands=(
     'anno-prs:annotate the branches based on their corresponding GitHub PR numbers and authors'
-    'checkout-prs:check out the given pull requests locally' # TODO (#393): Add support in zsh and bash completion for options of `git machete github checkout-prs`
+    'checkout-prs:check out the given pull requests locally'
     'create-pr:create a PR for the current branch, using the upstream (parent) branch as the PR base'
     'retarget-pr:set the base of the current branch PR to upstream (parent) branch'
   )
