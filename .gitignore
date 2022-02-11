@@ -1,3 +1,7 @@
+# Debian
+
+.pybuild/
+
 # Editors
 .idea/
 *.swp

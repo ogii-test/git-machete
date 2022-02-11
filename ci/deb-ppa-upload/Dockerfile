@@ -3,7 +3,8 @@ SHELL ["/bin/bash", "-e", "-o", "pipefail", "-u", "-x", "-c"]
 
 # See https://github.com/phusion/baseimage-docker/issues/58 for why DEBIAN_FRONTEND=noninteractive is needed.
 RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y debhelper devscripts fakeroot dh-python gawk python3-all python3-paramiko python3-setuptools \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+      debhelper devscripts fakeroot dh-python gawk python3-all python3-paramiko python3-setuptools sudo \
     && rm -rfv /var/lib/apt/lists/*
 
 FROM base AS circle_ci
@@ -28,7 +29,8 @@ RUN set -x \
     && [ ${group_id:-0} -ne 0 ] \
     # sometimes the given `group_id` is already taken and `addgroup` raises an error, so let's check its existence first
     && (getent group $group_id || addgroup --gid=${group_id} ci-user) \
-    && useradd -l -u ${user_id} -g $group_id ci-user \
+    && useradd -l -u ${user_id} -g $group_id -G sudo ci-user \
+    && echo "ci-user:ci-user" | chpasswd \
     && install -d -m 0755 -o ci-user -g $group_id /home/ci-user
 
 USER ci-user

@@ -25,13 +25,19 @@ sed '/## New in git-machete 2\.12\.7/,$d' RELEASE_NOTES.md | awk \
   -f ~/release-notes-to-changelog.awk > debian/changelog
 
 # Since we upload over SFTP, we need to whitelist the host first to avoid the prompt.
-ssh-keyscan ppa.launchpad.net > ~/.ssh/known_hosts
+#ssh-keyscan ppa.launchpad.net > ~/.ssh/known_hosts
 
 # `-p` flag points to a script that wraps gpg so that we don't get asked for password to the private key on TTY.
+debuild -b -p"$HOME/gpg-sign.sh"
+ls -l ..
+! command -v git-machete &>/dev/null
+# Let's do a test installation within the container.
+# Note that we will NOT publish *.deb binary package itself - rather the source package, built with `debuild -S` below.
+echo ci-user | sudo -S dpkg -i ../python3-git-machete_*.deb
+[[ $(git machete version) == "git-machete version $VERSION" ]]
+
 debuild -S -p"$HOME/gpg-sign.sh"
-cat ../python3-git-machete_*.dsc
-cat ../python3-git-machete_*_source.buildinfo
-cat ../python3-git-machete_*_source.changes
+ls -l ..
 tar tvf ../python3-git-machete_*.tar.gz
 
 if [[ $DO_DPUT == true ]]; then
