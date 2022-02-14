@@ -10,7 +10,7 @@ executors:
 
 mandatory_jobs: &mandatory_jobs
   - general checks
-  - test against python 3_6 and git 1_8_10
+  - test against python 3_6 and git 1_8_10 
   - test against python 3_7 and git 2_7_6
   - test against python 3_8 and git 2_25_0 with PEP8 check
   - test against python 3_9 and git 2_30_1 with coverage report
