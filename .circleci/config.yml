@@ -192,7 +192,7 @@ jobs:
       #    Nix git-machete package is updated with the fresh version/package hash according to the data from PyPI.
 
 mandatory_jobs: &mandatory_jobs
-  - general checks
+  #- general checks
   - test against python 3_6 and git 1_8_10
   - test against python 3_7 and git 2_7_6
   - test against python 3_8 and git 2_25_0 with PEP8 check
