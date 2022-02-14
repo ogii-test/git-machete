@@ -11,7 +11,7 @@ executors:
 jobs:
   "general checks":
     executor: ubuntu_executor
-    steps:
+    steps: 
       - checkout
       - run:
           name: Install dependencies
